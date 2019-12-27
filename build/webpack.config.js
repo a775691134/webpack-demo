@@ -7,6 +7,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin"); // 将css合并
 const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin') // 拆分成多个css并引入
 let indexLess = new ExtractTextWebpackPlugin('index.less');
 let indexCss = new ExtractTextWebpackPlugin('index.css');
+const Webpack = require('webpack')
+
 module.exports = {
     mode: 'development', // 开发模式
     entry: {
@@ -35,7 +37,8 @@ module.exports = {
             chunkFilename: "[id].css",
         }),
         indexLess,
-        indexCss
+        indexCss,
+        new Webpack.HotModuleReplacementPlugin() // 热更新
     ],
     module: {
         rules: [{
@@ -106,5 +109,10 @@ module.exports = {
                 exclude: /node_modules/
             },
         ]
-    }
+    },
+    devServer: {
+        port: 3000,
+        hot: true,
+        contentBase: '../dist'
+    },
 }
